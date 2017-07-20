@@ -8,7 +8,7 @@ kind interactive media using pure JavaScript code.
 
 ### Lesson 1
 
-1. Start Hexi (I'll help you get this setup in that online code editor) by running: `npm start`
+1. Open the index.html file in cloud9 web ide by going opening index.html, and then clicking Preview -> Live Preview File.
 1. Read through the code in `/js/lesson_1.js`, you will see the following sections.
 1. The `load` function, that will run while your files are loading.
 1. The `setup` function, which initializes your game objects, variables and sprites.

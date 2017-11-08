@@ -31,9 +31,10 @@ Take a look at the code ahead to see how it all works.
 //of files: images, texture atlases, bitmap fonts, ordinary font files, and
 //sounds
 let thingsToLoad = [
-  "images/cat.png",
+  "images/HoustyHeadTiny.png",
   "fonts/puzzler.otf",
-  "sounds/music.wav"
+  "sounds/loops.mp3",
+  "sounds/Aaah.mp3"
 ];
 
 //Initialize Hexi with the `hexi` function. It has 5 arguments,
@@ -109,16 +110,22 @@ function setup() {
 
   //Create a `group` called `cats` to store all the cats
   cats = g.group();
-
+  
   //Create a function to make a cat sprite. `makeCat` takes two arguments:
   //the `x` and `y` screen position values where the cat should start.
   //As you'll see ahead, this function is going to be called by Hexi's
   //`pointer` object each time it's clicked.
   let makeCat = (x, y) => {
 
+    // Lets play a sound effect
+    g.sound("sounds/Aaah.mp3").play();
+
     //Create the cat sprite. Supply the `sprite` method with
     //the name of the loaded image that should be displayed
-    let cat = g.sprite("images/cat.png");
+    let cat = g.sprite("images/HoustyHeadTiny.png");
+    
+    // can we shrink it down? Yes...
+    cat.scale.set(0.4);
 
     //Hexi exposes Pixi (the 2D rendering engine) as a top level global object called `PIXI`. That
     //means you can use the `PIXI` object to write any low-level Pixi code,
@@ -137,7 +144,7 @@ function setup() {
     //Add some optional tween animation effects from the Hexi's
     //built-in tween library (called Charm). `breathe` makes the
     //sprite scale in and out. `pulse` oscillates its transparency
-    g.breathe(cat, 2, 2, 20);
+    g.breathe(cat, 1.0, 1.0, 20);
     g.pulse(cat, 10, 0.5);
 
     //Set the cat's velocity to a random number between -10 and 10
@@ -150,7 +157,7 @@ function setup() {
 
   //Create a text sprite. Display the initial text, set the font
   //style and colour
-  message = g.text("Tap for cats!", "38px puzzler", "red");
+  message = g.text("Tap for Heads!", "38px puzzler", "red");
 
   //You can re-assign the text sprite's style at any time by assigning
   //a custom options object to the `style` property. See Pixi's
@@ -194,7 +201,7 @@ function setup() {
   };
 
   //Play an optional loaded sound file.
-  let music = g.sound("sounds/music.wav");
+  let music = g.sound("sounds/loops.mp3");
   music.loop = true;
   music.play();
 

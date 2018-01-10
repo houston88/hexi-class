@@ -33,4 +33,4 @@ kind interactive media using pure JavaScript code.
 1. Check out the new treasure hunter with images!
 1. Lets add our own custom images.
 1. More info here. [https://github.com/kittykatattack/hexi#using-images](https://github.com/kittykatattack/hexi#using-images)
-1 There is also good information in the link about creating "texture atlas" that has all the sprites in one file, pretty cool!
+1. There is also good information in the link about creating "texture atlas" that has all the sprites in one file, pretty cool!

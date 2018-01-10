@@ -2,10 +2,14 @@
 Learn how to use Hexi to build a simple game prototype
 */
 
+//An array that contains all the files you want to load
 let thingsToLoad = [
-  "images/explosion.png",
-  "sounds/explosion.mp3",
-  "sounds/Aaah.mp3"
+  "images/explorer.png",
+  "images/dungeon.png",
+  "images/blob.png",
+  "images/treasure.png",
+  "images/door.png",
+  "sounds/chimes.wav"
 ];
 
 //Create a new Hexi instance, and start it
@@ -20,59 +24,50 @@ g.start();
 
 //Declare your global variables (global to this game, which means you
 //want to use them in more than one function)
-let dungeon, player, treasure, enemies, chimes, explod, explods,
-  exit, healthBar, message, gameScene, gameOverScene;
+let dungeon, player, treasure, enemies, chimes, exit,
+    healthBar, message, gameScene, gameOverScene;
 
 //The `setup` function runs once and is used to initializes your game
 function setup() {
 
   //Create the `chimes` sound object
-  chimes = g.sound("sounds/explosion.mp3");
+  chimes = g.sound("sounds/chimes.wav");
 
-  //Create the `gameScene` group
-  gameScene = g.group();
-  
-  // group of explods
-  explods = g.group();
-  
-  // add empty explods to scene
-  gameScene.addChild(explods);
+  //The dungeon background
+  dungeon = g.sprite("images/dungeon.png");
 
   //The exit door
-  exit = g.rectangle(48, 48, "green");
-  exit.x = 8;
-  exit.y = 8;
-  gameScene.addChild(exit);
+  exit = g.sprite("images/door.png");
+  exit.x = 32;
 
   //The player sprite
-  player = g.rectangle(32, 32, "blue");
+  player = g.sprite("images/explorer.png");
   player.x = 68;
-  player.y = g.canvas.height / 2 - player.halfHeight;
-  gameScene.addChild(player);
+  player.y = g.canvas.height / 2 - player.halfWidth;
 
   //Create the treasure
-  treasure = g.rectangle(16, 16, "gold");
+  treasure = g.sprite("images/treasure.png");
 
   //Position it next to the left edge of the canvas
-  //treasure.x = g.canvas.width - treasure.width - 10;
+  treasure.x = g.canvas.width - treasure.width - 40;
   treasure.y = g.canvas.height / 2 - treasure.halfHeight;
 
   //Alternatively, you could use Ga's built in convience method
   //called `putCenter` to postion the sprite like this:
-  g.stage.putCenter(treasure, 208, 0);
+  //g.stage.putCenter(treasure, 208, 0);
 
   //Create a `pickedUp` property on the treasure to help us Figure
   //out whether or not the treasure has been picked up by the player
   treasure.pickedUp = false;
 
-  //Add the treasure to the `gameScene`
-  gameScene.addChild(treasure);
+  //Create the `gameScene` group and add the sprites
+  gameScene = g.group(dungeon, exit, player, treasure);
 
   //Make the enemies
   let numberOfEnemies = 6,
       spacing = 48,
       xOffset = 150,
-      speed = 8,
+      speed = 2,
       direction = 1;
 
   //An array to store all the enemies
@@ -82,7 +77,7 @@ function setup() {
   for (let i = 0; i < numberOfEnemies; i++) {
 
     //Each enemy is a red rectangle
-    let enemy = g.rectangle(32, 32, "red");
+    let enemy = g.sprite("images/blob.png");
 
     //Space each enemey horizontally according to the `spacing` value.
     //`xOffset` determines the point from the left of the screen
@@ -113,8 +108,8 @@ function setup() {
   }
 
   //Create the health bar
-  let outerBar = g.rectangle(128, 16, "black"),
-      innerBar = g.rectangle(128, 16, "yellowGreen");
+  let outerBar = g.rectangle(128, 8, "black"),
+      innerBar = g.rectangle(128, 8, "red");
 
   //Group the inner and outer bars
   healthBar = g.group(outerBar, innerBar);
@@ -123,22 +118,20 @@ function setup() {
   healthBar.inner = innerBar;
 
   //Position the health bar
-  healthBar.x = g.canvas.width - 148;
-  healthBar.y = 16;
+  healthBar.x = g.canvas.width - 158;
+  healthBar.y = 4;
 
   //Add the health bar to the `gameScene`
   gameScene.addChild(healthBar);
 
-  explod = g.sprite("images/explosion.png");
-  explod.setPosition(0, 0);
-  //Create a `gameOverScene` group and add the message sprite to it
-  gameOverScene = g.group(explod);
   //Add some text for the game over message
   message = g.text("Game Over!", "64px Futura", "black", 20, 20);
   message.x = 120;
   message.y = g.canvas.height / 2 - 64;
-  gameOverScene.addChild(message);
-  
+
+  //Create a `gameOverScene` group and add the message sprite to it
+  gameOverScene = g.group(message);
+
   //Make the `gameOverScene` invisible for now
   gameOverScene.visible = false;
 
@@ -203,9 +196,7 @@ function setup() {
     }
   };
 
-
   */
-
 
   //set the game state to `play`
   g.state = play;
@@ -218,7 +209,14 @@ function play() {
   g.move(player);
 
   //Keep the player contained inside the stage's area
-  g.contain(player, g.stage);
+  g.contain(
+    player,
+    {
+      x: 32, y: 16,
+      width: g.canvas.width - 32,
+      height: g.canvas.height - 32
+    }
+  );
 
   //Move the enemies and check for a collision
 
@@ -232,7 +230,14 @@ function play() {
     g.move(enemy);
 
     //Check the enemy's screen boundaries
-    let enemyHitsEdges = g.contain(enemy, g.stage);
+    let enemyHitsEdges = g.contain(
+      enemy,
+      {
+        x: 32, y: 16,
+        width: g.canvas.width - 32,
+        height: g.canvas.height - 32
+      }
+    );
 
     //If the enemy hits the top or bottom of the stage, reverse
     //its direction
@@ -252,29 +257,14 @@ function play() {
   //If the player is hit...
   if (playerHit) {
 
-    // play noise
-    chimes.play();
-    
-    // set exlod sprit location and add to game scene
-    explod = g.sprite("images/explosion.png");
-    explod.scale.set(0.1);
-    explod.setPosition(player.x - 12, player.y - 12);
-    explods.addChild(explod);
-
-    // remove explostion after a little white
-    setTimeout(() => {
-      explods.removeChildren();
-    }, 500);
-
     //Make the player semi-transparent
     player.alpha = 0.5;
 
     //Reduce the width of the health bar's inner rectangle by 1 pixel
-    healthBar.inner.width -= 5;
+    healthBar.inner.width -= 1;
   } else {
-    // remove the explosion
-    //gameScene.removeChild(explod);
-    // Make the player fully opaque (non-transparent) if it hasn't been hit
+
+    //Make the player fully opaque (non-transparent) if it hasn't been hit
     player.alpha = 1;
   }
 
@@ -298,10 +288,9 @@ function play() {
 
   //Does the player have enough health? If the width of the `innerBar`
   //is less than zero, end the game and display "You lost!"
-  if (healthBar.inner.width <= 5) {
+  if (healthBar.inner.width < 0) {
     g.state = end;
     message.content = "You lost!";
-    g.sound("sounds/Aaah.mp3").play();
   }
 
   //If the player has brought the treasure to the exit,
@@ -318,4 +307,3 @@ function end() {
   gameScene.visible = false;
   gameOverScene.visible = true;
 }
-

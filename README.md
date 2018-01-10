@@ -27,3 +27,10 @@ kind interactive media using pure JavaScript code.
 1. Find the numberOfEnemies = 6 line. Try playing with these variables to make the game harder, like really hard!
 1. Try making the hits do more damage! Now it's harder!
 1. Pretty cool huh! By just changing a few variables, we can make the game harder.
+
+### Lesson 3
+
+1. Check out the new treasure hunter with images!
+1. Lets add our own custom images.
+1. More info here. [https://github.com/kittykatattack/hexi#using-images](https://github.com/kittykatattack/hexi#using-images)
+1 There is also good information in the link about creating "texture atlas" that has all the sprites in one file, pretty cool!

@@ -31,7 +31,7 @@ Take a look at the code ahead to see how it all works.
 //of files: images, texture atlases, bitmap fonts, ordinary font files, and
 //sounds
 let thingsToLoad = [
-  "images/HoustyHeadTiny.png",
+  "images/alien.png",
   "fonts/puzzler.otf",
   "sounds/loops.mp3",
   "sounds/Aaah.mp3"

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hexi js game lessons",
   "scripts": {
-    "start": "http-server ."
+    "start": "http-server -c-1 ."
   },
   "author": "Housty",
   "license": "ISC",
